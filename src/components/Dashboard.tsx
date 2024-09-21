@@ -46,7 +46,7 @@ const Dashboard = ({setActive}: PropsModal) => {
           </div>
 
           <div className="bg-gray-950 text-white border-purple-300 border bg-opacity-50 p-8 rounded-xl shadow-lg relative 2xl:bottom-10 xl:bottom-20">
-            <Link href={"/lecture"}>
+            <Link href={"/lecture2"}>
               <strong>Modulo 2</strong>
               <p>
                 Comienza tu apredizaje con esta clase y potencia tu ingles como

@@ -14,7 +14,6 @@ const Navbar = () => {
 
   return (
     <>
-
         <div className="container mx-auto px-6 py-3 flex flex-col justify-center items-center sm:flex-row sm:justify-between pt-5">
           <a
             href="/"
@@ -43,29 +42,6 @@ const Navbar = () => {
               Rutas
             </a>
           </div>
-          {/* <div className="flex items-center space-x-4">
-            <Link href={session ? "/settings" : "/"}>
-              <li className="relative">
-                <span className="group inline-block">
-                  <Image
-                    src={"/settings01.png"}
-                    width={50}
-                    height={50}
-                    alt="image-settings"
-                    className="cursor-pointer group-hover:rotate-180 transition-transform duration-500 animate-fadeIn"
-                  />
-                </span>
-              </li>
-            </Link> */}
-
-          {/* {session ? (
-            
-
-              
-            </li>
-          ) : (
-            <></>
-          )} */}
           {session ? (
             <div className="flex items-center space-x-4">
               {/* <FaCog className="text-white text-2xl cursor-pointer hover:text-gray-300 transition-colors" /> */}

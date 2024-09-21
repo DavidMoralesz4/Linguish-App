@@ -3,6 +3,11 @@
 import { useSession } from "next-auth/react";
 import React, { useState, useEffect } from "react";
 import Button from "./ButtonUI";
+import { Modal } from "antd";
+import Confetti from "react-confetti";
+import { useRouter } from "next/navigation";
+import { useProgress } from "@/context/ProgressUserProvider";
+// import { useProgress } from "./ProgressContext"; // Importamos el contexto
 
 interface Exercise {
   text: string;
@@ -12,12 +17,14 @@ interface Exercise {
 
 function FillGapsExercises() {
   const { data: session } = useSession();
+  const router = useRouter();
+  const { percent, increaseProgress } = useProgress(); // Usamos el progreso
   const [showContent, setShowContent] = useState<boolean>(false);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
-  const [selectedWords, setSelectedWords] = useState<{ [key: string]: string }>(
-    {}
-  );
+  const [selectedWords, setSelectedWords] = useState<{ [key: string]: string }>({});
   const [incorrect, setIncorrect] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const exercises: Exercise[] = [
     {
@@ -31,9 +38,24 @@ function FillGapsExercises() {
       options: ["Swimming", "Eating", "Jumping", "Playing volleyball"],
     },
     {
-      text: " My brothers ___  football on  ___ .",
+      text: "My brothers ___ football on ___ .",
       gaps: { word1: "Watch", word2: "television" },
       options: ["Watch", "Football", "television", "Jump"],
+    },
+    {
+      text: "They ___ to the mall and ___ new clothes.",
+      gaps: { word1: "went", word2: "bought" },
+      options: ["went", "ate", "bought", "played"],
+    },
+    {
+      text: "We ___ at 6:00 am and ___ breakfast.",
+      gaps: { word1: "woke up", word2: "had" },
+      options: ["woke up", "ran", "had", "made"],
+    },
+    {
+      text: "She ___ her homework before ___ dinner.",
+      gaps: { word1: "finished", word2: "having" },
+      options: ["finished", "playing", "having", "doing"],
     },
   ];
 
@@ -45,10 +67,16 @@ function FillGapsExercises() {
       setIncorrect(false);
 
       if (Object.keys(selectedWords).length + 1 === Object.keys(currentExercise.gaps).length) {
-        setTimeout(() => {
-          setSelectedWords({});
-          setCurrentExerciseIndex((prev) => (prev + 1) % exercises.length);
-        }, 1000);
+        increaseProgress(); // Incrementamos el progreso al completar el ejercicio
+        if (currentExerciseIndex + 1 === exercises.length) {
+          setShowConfetti(true);
+          setIsModalVisible(true);
+        } else {
+          setTimeout(() => {
+            setSelectedWords({});
+            setCurrentExerciseIndex((prev) => prev + 1);
+          }, 1000);
+        }
       }
     } else {
       setIncorrect(true);
@@ -56,6 +84,11 @@ function FillGapsExercises() {
         setIncorrect(false);
       }, 1000);
     }
+  };
+
+  const handleModalOk = () => {
+    setIsModalVisible(false);
+    router.push("/dashboard");
   };
 
   useEffect(() => {
@@ -72,6 +105,7 @@ function FillGapsExercises() {
     <>
       {session ? (
         <>
+          {showConfetti && <Confetti />}
           {!showContent ? (
             <div className="welcome-screen flex items-center justify-center h-[70px]">
               <div className="text-center">
@@ -79,7 +113,7 @@ function FillGapsExercises() {
                   ¡Bienvenido!
                 </h1>
                 <p className="text-xl sm:text-2xl text-gray-300 animate-fadeIn delay-500">
-                  Este es el módulo de presentación.
+                  Buena suerte con los ejercicios :D
                 </p>
               </div>
             </div>
@@ -117,6 +151,17 @@ function FillGapsExercises() {
               </div>
             </div>
           )}
+
+          {/* Modal for completing exercises */}
+          <Modal
+            title="¡Ejercicio Completado!"
+            visible={isModalVisible}
+            onOk={handleModalOk}
+            onCancel={handleModalOk}
+            okText="Volver al Dashboard"
+          >
+            <p>¡Felicitaciones! Has completado todos los ejercicios.</p>
+          </Modal>
         </>
       ) : null}
     </>
@@ -124,5 +169,3 @@ function FillGapsExercises() {
 }
 
 export default FillGapsExercises;
-
-

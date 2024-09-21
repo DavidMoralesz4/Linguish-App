@@ -25,7 +25,7 @@ interface ProgressContextType {
     const [percent, setPercent] = useState(0);
   
     const increaseProgress = () => {
-      setPercent((prev) => Math.min(prev + 10, 100));
+      setPercent((prev) => Math.min(prev + 2, 100));
     };
   
     return (

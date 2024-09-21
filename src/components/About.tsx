@@ -8,7 +8,7 @@ function About() {
       </p>
       <div>
         <div className="flex justify-center items-start text-center p-10 animate-fadeIn">
-          <p className="text-xl animate-fadeIn font-light relative text-shadow-lg 2xl:bottom-12 xl:bottom-12">
+          <p className="text-xl text-center text-gray-300 animate-fadeIn font-light relative text-shadow-lg 2xl:bottom-12 xl:bottom-12">
             Somos un equipo de apasionados desarrolladores inspirados en mejorar
             la comunicacion en ingles para entornos de trabajo o entrevistas
             laborales extranjeras
